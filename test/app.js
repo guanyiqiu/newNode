@@ -30,16 +30,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.get('/readfile', (req, res) => {
+app.get('/readfile', (req, response) => {
     // fs.readFile('C:/Users/yiqiu.guan/Desktop/huifu/各种网址(1).txt', 'utf8', function(err, data) {
     fs.readFile(req.query.url, 'utf8', function(err, data) {
         if (err) {
-            console.log(err)
+            console.log('err0', err)
         } else {
-            console.log('req', req.body)
-            res.send(data)
+            // response.writeHead(200,{"Content-Type":'text/plain','charset':'utf-8','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'PUT,POST,GET,DELETE,OPTIONS'});//可以解决跨域的请求
+            //str=fs.readFileSync('json.txt');//读取文件内容
+            console.log('data', data)
+            response.send(data);
+            response.end();
         }
     })
+    // 追加文件， 写入文件会直接覆盖原文件,使用\n换行（\r回车）
+    // fs.appendFile(req.query.url, 'HelloWorld\nHelloWorld2', function(err) {
+    //     if (err) {
+    //         throw err;
+    //     }
+    // })
 })
 
 // catch 404 and forward to error handler

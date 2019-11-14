@@ -5,26 +5,57 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+  <body style="width: 100wh;height:100vh;">
+    <!-- <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p> -->
     <button id="btn">点击请求</button>
   </body>
   <script>
     $(function(){
-    $('#btn').click(function(){
+    $('#btn').click(function(e){
+        e.stopPropagation()
         $.ajax({
             type: "get",
             url: "http://localhost:3000/readfile",
             data: {
-                url: 'C:/Users/yiqiu.guan/Desktop/huifu/各种网址(1).txt'
+                url: 'C:/Users/yiqiu.guan/Desktop/新建文本文档.txt'
             },
-            dataType: "json",
+            dataType: "text",
             success: function(data){
-                console.log(data); 
+                console.log('data', data)
+                alert(data)
+            },
+            error: function(err){
+                console.log('err', err); 
             }
         });
     })
+    /* 鼠标特效 */
+    var woedIndex = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var wordArr = new Array("富强","民主","文明","和谐","自由","平等","公正","法治","爱国","敬业","诚信","友善");
+            var wordBox = $("<span></span>").text(wordArr[woedIndex]);
+            woedIndex = (woedIndex + 1) % wordArr.length;
+            var x = e.pageX,
+            y = e.pageY;
+            wordBox.css({
+                "z-index": 999999,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"
+            });
+            $("body").append(wordBox);
+            wordBox.animate({
+                "top": y - 180,
+                "opacity": 0
+            },1500,function() {
+                wordBox.remove();
+            });
+        });
+    });
 })
   </script>
 </html>
